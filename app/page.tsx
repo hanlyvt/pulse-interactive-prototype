@@ -249,12 +249,13 @@ export default function Page() {
             </div>
           </div>
           <div className="choose-hint" aria-hidden="true">
-            <svg className="finger-icon" viewBox="0 0 72 86" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M35 75C27 78 17 75 12 68L4 57C2 54 3 50 6 48C9 46 12 47 15 50L25 59V18C25 14 28 11 32 11C36 11 39 14 39 18V42V8C39 4 42 1 46 1C50 1 53 4 53 8V43V16C53 12 56 9 60 9C64 9 67 12 67 16V48C67 62 58 72 45 76L35 75Z" />
-              <path d="M53 43V27C53 23 56 20 60 20" />
-              <path d="M39 42V24" />
-              <path d="M24 59L18 53" />
-              <path className="finger-spark" d="M18 13L14 7M8 25L1 23M20 2L18 -4" />
+            <svg className="finger-icon" viewBox="0 0 64 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30 71C24 71 18 68 14 63L6 53C4 50 4.5 46.5 7.5 44.5C10 42.5 13.5 43 16 45.5L23 52V16C23 12.5 25.5 10 29 10C32.5 10 35 12.5 35 16V39" />
+              <path d="M35 39V7C35 3.5 37.5 1 41 1C44.5 1 47 3.5 47 7V40" />
+              <path d="M47 40V16C47 12.5 49.5 10 53 10C56.5 10 59 12.5 59 16V45C59 59 50 69 37 72L30 71Z" />
+              <path d="M35 40V25C35 21.5 37.5 19 41 19" />
+              <path d="M47 40V29C47 25.5 49.5 23 53 23" />
+              <path className="finger-spark" d="M18 12L14 6M8 24L2 22" />
             </svg>
             <strong>{state === 'choose' ? 'CHOOSE ONE' : 'MOVE TO WAKE PULSE'}</strong>
           </div>
