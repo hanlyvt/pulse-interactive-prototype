@@ -1,18 +1,19 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AudioLines, Camera, CameraOff, RotateCcw, X } from 'lucide-react'
+import { AudioLines, BriefcaseBusiness, Camera, CameraOff, House, Martini, Moon, RotateCcw, X } from 'lucide-react'
 
 const BOTTLE_SRC = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fles-xdbOvpaEPnIiFKGKxH6F0KuOwNwYMh.png'
 const SOUND_SRC = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pulse-open-8x4s9HQHS6HuYzgzT8RvFG7aODKVpl.mp3'
 
-type State = 'setup' | 'idle' | 'detected' | 'sound' | 'reveal' | 'fadeOut' | 'cooldown'
+type State = 'setup' | 'idle' | 'detected' | 'sound' | 'choose' | 'reveal' | 'fadeOut' | 'cooldown'
 
 const statusText: Record<State, string> = {
   setup: 'NIGHT MODE STANDBY',
   idle: 'SENSOR ACTIVE — WAITING FOR MOVEMENT',
   detected: 'MOVEMENT DETECTED',
   sound: 'A SIGNAL IN THE DARK',
+  choose: 'CHOOSE ONE',
   reveal: 'PULSE — STILL AWAKE',
   fadeOut: 'THE NIGHT REMEMBERS',
   cooldown: 'RESETTING SENSOR',
@@ -111,7 +112,7 @@ export default function Page() {
       setSoundVisible(false)
       if (process.env.NODE_ENV !== 'production') console.log('[PULSE] silence')
     })
-    schedule(950, () => setVisualState('reveal'))
+    schedule(950, () => setVisualState('choose'))
     schedule(6500, () => setVisualState('fadeOut'))
     schedule(8500, () => setVisualState('cooldown'))
     schedule(10500, () => {
@@ -189,6 +190,11 @@ export default function Page() {
     }
   }
 
+  useEffect(() => {
+    if (!streamRef.current && !activatingRef.current) void activate()
+    return () => undefined
+  }, [])
+
   const reset = () => resetExperience()
 
   const exit = () => {
@@ -228,13 +234,27 @@ export default function Page() {
           <div className="flavour-lockup"><div className="qr-placeholder" aria-hidden="true">{Array.from({ length: 25 }).map((_, index) => <i key={index} />)}</div><span>FIND YOUR<br />FLAVOUR</span></div>
         </section>
 
-        {state === 'setup' && <section className="setup-panel" aria-labelledby="setup-title">
-          <p className="setup-kicker">A WEBCAM-REACTIVE DIGITAL POSTER</p>
-          <h1 id="setup-title">THE NIGHT<br /><span>NOTICES YOU.</span></h1>
-          <p className="setup-copy">Activate your camera to experience the poster. Camera input is used locally for movement detection only. Nothing is recorded or stored.</p>
-          {error && <div className="error-panel" role="alert"><strong>CAMERA UNAVAILABLE</strong><span>{error}</span></div>}
-          <button className="primary-cta" onClick={activate}><Camera data-icon="inline-start" />{error ? 'TRY AGAIN' : 'ACTIVATE NIGHT MODE'}<span>↗</span></button>
-          <p className="privacy">Camera input is processed locally for movement detection.<br />No video, image or personal data is recorded, stored or sent.</p>
+        {(state === 'setup' || state === 'idle' || state === 'choose') && <section className={`home-screen ${state === 'choose' ? 'is-choice' : ''}`} aria-labelledby="home-title">
+          <div className="home-brand" aria-hidden="true">
+            <span className="pulse-word">Pulse</span>
+            <span className="pulse-tagline">STAY IN BALANCE</span>
+          </div>
+          <div className="home-slogan">Steady, so<br />you can be.</div>
+          <div className="home-content">
+            <p className="home-kicker">{state === 'choose' ? 'CHOOSE YOUR NIGHT' : 'PULSE / NIGHT MODE'}</p>
+            <h1 id="home-title">What are you<br />doing up?</h1>
+            <div className="home-rule" />
+            <div className="choice-grid">
+              <button className="choice-button" disabled={state !== 'choose'} onClick={() => setVisualState('reveal')}><BriefcaseBusiness /><span>Going to work</span><b>›</b></button>
+              <button className="choice-button" disabled={state !== 'choose'} onClick={() => setVisualState('reveal')}><Moon /><span>Can&apos;t sleep</span><b>›</b></button>
+              <button className="choice-button" disabled={state !== 'choose'} onClick={() => setVisualState('reveal')}><Martini /><span>Going out</span><b>›</b></button>
+              <button className="choice-button" disabled={state !== 'choose'} onClick={() => setVisualState('reveal')}><House /><span>Going home</span><b>›</b></button>
+            </div>
+          </div>
+          <div className="choose-hint" aria-hidden="true"><span>☝</span><strong>{state === 'choose' ? 'CHOOSE ONE' : 'MOVE TO WAKE PULSE'}</strong></div>
+          {error && <div className="error-panel home-error" role="alert"><strong>CAMERA UNAVAILABLE</strong><span>{error}</span><button onClick={activate}>TRY AGAIN</button></div>}
+          <div className="home-footer-left">HYDRATION<br />FOCUS<br />BALANCE</div>
+          <div className="home-footer-right">MORE THAN A DRINK.<br />A BRIGHTER YOU.</div>
         </section>}
 
         {state === 'cooldown' && <div className="cooldown-label">RESETTING SENSOR <span>2</span></div>}
