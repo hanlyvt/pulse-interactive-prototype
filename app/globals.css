@@ -257,6 +257,223 @@ button { cursor: pointer; }
 .qr-placeholder i:nth-child(3n+1),
 .qr-placeholder i:nth-child(7n) { opacity: .15; }
 
+
+/* PULSE home / choice screen */
+.home-screen {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  overflow: hidden;
+  background: #101d2d;
+  color: var(--cream);
+  padding: clamp(28px, 5vh, 56px) clamp(32px, 7vw, 100px);
+}
+
+.home-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.015), transparent 28%, rgba(0,0,0,.08));
+}
+
+.home-brand {
+  position: absolute;
+  top: clamp(32px, 7vh, 72px);
+  left: clamp(32px, 7vw, 100px);
+  display: grid;
+  gap: 7px;
+  z-index: 2;
+}
+
+.pulse-word {
+  color: var(--gold);
+  font-size: clamp(58px, 8vw, 118px);
+  line-height: .82;
+  font-weight: 300;
+  letter-spacing: -.07em;
+}
+
+.pulse-tagline {
+  color: var(--gold);
+  font-size: clamp(9px, .9vw, 13px);
+  letter-spacing: .38em;
+  font-weight: 600;
+}
+
+.home-slogan {
+  position: absolute;
+  z-index: 2;
+  top: clamp(42px, 9vh, 92px);
+  right: clamp(32px, 8vw, 115px);
+  color: rgba(238,231,216,.9);
+  font-size: clamp(18px, 2.1vw, 30px);
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  text-shadow: 0 0 18px rgba(238,231,216,.35);
+}
+
+.home-content {
+  position: absolute;
+  z-index: 2;
+  left: clamp(32px, 7vw, 100px);
+  right: clamp(32px, 7vw, 100px);
+  top: 34%;
+}
+
+.home-kicker {
+  margin: 0 0 14px;
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: .28em;
+}
+
+.home-content h1 {
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(46px, 6.5vw, 94px);
+  line-height: .9;
+  letter-spacing: -.07em;
+  font-weight: 300;
+  text-shadow: 0 0 22px rgba(238,231,216,.28);
+}
+
+.home-rule {
+  width: min(350px, 30vw);
+  height: 2px;
+  margin: clamp(20px, 3vh, 30px) 0;
+  background: var(--gold);
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: clamp(12px, 1.5vw, 22px);
+  width: min(920px, 78vw);
+}
+
+.choice-button {
+  min-height: clamp(68px, 8vh, 92px);
+  display: grid;
+  grid-template-columns: 42px 1fr 24px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 clamp(18px, 2vw, 28px);
+  border: 1px solid rgba(201,164,93,.8);
+  border-radius: 10px;
+  background: rgba(7,15,25,.28);
+  color: var(--cream);
+  text-align: left;
+  transition: background .2s, box-shadow .2s, transform .2s, opacity .2s;
+}
+
+.choice-button svg {
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+  stroke-width: 1.5;
+}
+
+.choice-button span {
+  font-size: clamp(15px, 1.45vw, 22px);
+  letter-spacing: -.02em;
+}
+
+.choice-button b {
+  color: var(--gold);
+  font-size: 30px;
+  font-weight: 300;
+  text-align: right;
+}
+
+.choice-button:disabled {
+  cursor: default;
+  opacity: .82;
+}
+
+.choice-button:not(:disabled):hover {
+  background: rgba(201,164,93,.11);
+  box-shadow: 0 0 28px rgba(201,164,93,.13);
+  transform: translateY(-2px);
+}
+
+.is-choice .choice-button {
+  animation: choice-ready 1.8s ease-in-out infinite;
+}
+
+.is-choice .choice-button:nth-child(2) { animation-delay: .15s; }
+.is-choice .choice-button:nth-child(3) { animation-delay: .3s; }
+.is-choice .choice-button:nth-child(4) { animation-delay: .45s; }
+
+.choose-hint {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: clamp(78px, 11vh, 125px);
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  color: var(--gold);
+}
+
+.choose-hint span {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(201,164,93,.45));
+  animation: finger-hint 1.4s ease-in-out infinite;
+}
+
+.choose-hint strong {
+  font-size: 9px;
+  letter-spacing: .42em;
+  font-weight: 500;
+}
+
+.home-footer-left,
+.home-footer-right {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(28px, 5vh, 52px);
+  color: rgba(238,231,216,.78);
+  font-size: 9px;
+  line-height: 1.75;
+  letter-spacing: .3em;
+}
+
+.home-footer-left { left: clamp(32px, 7vw, 100px); }
+.home-footer-right { right: clamp(32px, 7vw, 100px); text-align: right; }
+
+.home-error {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  width: min(420px, 80vw);
+  margin: 0;
+}
+
+.home-error button {
+  justify-self: start;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  padding: 4px 0;
+  font-size: 9px;
+  letter-spacing: .15em;
+}
+
+@keyframes finger-hint {
+  0%, 100% { transform: translateY(0); opacity: .65; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
+
+@keyframes choice-ready {
+  0%, 100% { box-shadow: 0 0 0 rgba(201,164,93,0); }
+  50% { box-shadow: 0 0 20px rgba(201,164,93,.09); }
+}
+
 .setup-panel {
   position: absolute;
   z-index: 5;
@@ -527,6 +744,66 @@ button { cursor: pointer; }
     left: 7vw;
     top: 20%;
     max-width: 48vw;
+  }
+
+
+  .home-screen {
+    padding: max(24px, env(safe-area-inset-top)) 7vw max(24px, env(safe-area-inset-bottom));
+  }
+
+  .home-brand {
+    top: max(28px, env(safe-area-inset-top));
+    left: 7vw;
+  }
+
+  .pulse-word { font-size: clamp(54px, 15vw, 82px); }
+  .pulse-tagline { font-size: 8px; letter-spacing: .3em; }
+
+  .home-slogan {
+    top: max(34px, env(safe-area-inset-top));
+    right: 7vw;
+    font-size: clamp(14px, 4vw, 21px);
+  }
+
+  .home-content {
+    top: 30%;
+    left: 7vw;
+    right: 7vw;
+  }
+
+  .home-content h1 {
+    font-size: clamp(42px, 12vw, 68px);
+  }
+
+  .home-rule {
+    width: 42vw;
+    margin: 18px 0;
+  }
+
+  .choice-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .choice-button {
+    min-height: 58px;
+    grid-template-columns: 34px 1fr 20px;
+    padding: 0 15px;
+  }
+
+  .choice-button svg { width: 23px; height: 23px; }
+  .choice-button span { font-size: 14px; }
+  .choice-button b { font-size: 24px; }
+
+  .choose-hint {
+    bottom: max(72px, calc(env(safe-area-inset-bottom) + 58px));
+  }
+
+  .home-footer-left,
+  .home-footer-right {
+    bottom: max(18px, env(safe-area-inset-bottom));
+    font-size: 7px;
   }
 
   .setup-panel {
