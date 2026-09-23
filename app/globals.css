@@ -367,10 +367,20 @@ button { cursor: pointer; }
   color: var(--gold);
 }
 
-.choose-hint span {
-  font-size: 30px;
-  line-height: 1;
+.finger-icon {
+  width: 48px;
+  height: 58px;
+  overflow: visible;
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 7px rgba(201,164,93,.22));
   animation: finger-hint 1.4s ease-in-out infinite;
+}
+
+.finger-icon .finger-spark {
+  stroke-width: 2;
 }
 
 .choose-hint strong {
