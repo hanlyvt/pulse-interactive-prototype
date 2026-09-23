@@ -241,7 +241,7 @@ export default function Page() {
           </div>
           <div className="home-moon" aria-hidden="true" />
           <div className="home-content">
-            <h1 id="home-title">What are you<br />doing up?</h1>
+            <h1 id="home-title">What are you doing up?</h1>
             <div className="home-rule" />
             <div className="choice-grid">
               <button className="choice-button" disabled={state !== 'choose'} onClick={() => setVisualState('reveal')}><BriefcaseBusiness /><span>Going to work</span><b>›</b></button>
