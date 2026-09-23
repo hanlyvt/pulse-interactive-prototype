@@ -237,11 +237,8 @@ export default function Page() {
         {(state === 'setup' || state === 'idle' || state === 'choose') && <section className={`home-screen ${state === 'choose' ? 'is-choice' : ''}`} aria-labelledby="home-title">
           <div className="home-brand" aria-hidden="true">
             <span className="pulse-word">Pulse</span>
-            <span className="pulse-tagline">STAY IN BALANCE</span>
           </div>
-          <div className="home-slogan">Steady, so<br />you can be.</div>
           <div className="home-content">
-            <p className="home-kicker">{state === 'choose' ? 'CHOOSE YOUR NIGHT' : 'PULSE / NIGHT MODE'}</p>
             <h1 id="home-title">What are you<br />doing up?</h1>
             <div className="home-rule" />
             <div className="choice-grid">
@@ -253,8 +250,6 @@ export default function Page() {
           </div>
           <div className="choose-hint" aria-hidden="true"><span>☝</span><strong>{state === 'choose' ? 'CHOOSE ONE' : 'MOVE TO WAKE PULSE'}</strong></div>
           {error && <div className="error-panel home-error" role="alert"><strong>CAMERA UNAVAILABLE</strong><span>{error}</span><button onClick={activate}>TRY AGAIN</button></div>}
-          <div className="home-footer-left">HYDRATION<br />FOCUS<br />BALANCE</div>
-          <div className="home-footer-right">MORE THAN A DRINK.<br />A BRIGHTER YOU.</div>
         </section>}
 
         {state === 'cooldown' && <div className="cooldown-label">RESETTING SENSOR <span>2</span></div>}
