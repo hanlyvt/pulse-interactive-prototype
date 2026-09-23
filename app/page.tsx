@@ -236,8 +236,10 @@ export default function Page() {
 
         {(state === 'setup' || state === 'idle' || state === 'choose') && <section className={`home-screen ${state === 'choose' ? 'is-choice' : ''}`} aria-labelledby="home-title">
           <div className="home-brand" aria-hidden="true">
+            <span className="home-pulse-line" />
             <span className="pulse-word">Pulse</span>
           </div>
+          <div className="home-moon" aria-hidden="true" />
           <div className="home-content">
             <h1 id="home-title">What are you<br />doing up?</h1>
             <div className="home-rule" />
