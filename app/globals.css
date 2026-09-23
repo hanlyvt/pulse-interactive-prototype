@@ -333,7 +333,7 @@ button { cursor: pointer; }
   position: absolute;
   z-index: 2;
   left: clamp(34px, 7vw, 88px);
-  top: 37%;
+  top: 39%;
   width: min(820px, calc(100vw - 2 * clamp(34px, 7vw, 88px)));
 }
 
@@ -344,8 +344,8 @@ button { cursor: pointer; }
   line-height: .95;
   letter-spacing: -.055em;
   font-weight: 300;
-  white-space: nowrap;
-  text-shadow: 0 0 18px rgba(238,231,216,.18);
+  white-space: normal;
+  text-shadow: 0 0 18px rgba(238,231,216,.22);
 }
 
 .home-rule {
