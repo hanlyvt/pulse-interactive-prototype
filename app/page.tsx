@@ -112,9 +112,9 @@ export default function Page() {
       if (process.env.NODE_ENV !== 'production') console.log('[PULSE] silence')
     })
     schedule(950, () => setVisualState('reveal'))
-    schedule(11150, () => setVisualState('fadeOut'))
-    schedule(13150, () => setVisualState('cooldown'))
-    schedule(33150, () => {
+    schedule(6500, () => setVisualState('fadeOut'))
+    schedule(8500, () => setVisualState('cooldown'))
+    schedule(10500, () => {
       resetExperience('idle')
       if (process.env.NODE_ENV !== 'production') console.log('[PULSE] detector re-armed')
     })
@@ -237,7 +237,7 @@ export default function Page() {
           <p className="privacy">Camera input is processed locally for movement detection.<br />No video, image or personal data is recorded, stored or sent.</p>
         </section>}
 
-        {state === 'cooldown' && <div className="cooldown-label">RESETTING SENSOR <span>20</span></div>}
+        {state === 'cooldown' && <div className="cooldown-label">RESETTING SENSOR <span>2</span></div>}
 
         <button className="dev-toggle" onClick={() => setDevOpen((open) => !open)} aria-label={devOpen ? 'Hide developer controls' : 'Show developer controls'}>{devOpen ? 'HIDE CONTROLS' : 'DEV CONTROLS'}</button>
         {devOpen && <aside className="dev-panel" aria-label="Developer controls">
