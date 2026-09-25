@@ -41,6 +41,7 @@ export default function Page() {
   const [assetError, setAssetError] = useState(false);
   const [soundVisible, setSoundVisible] = useState(false);
   const [devOpen, setDevOpen] = useState(true);
+  const [experience, setExperience] = useState<"poster" | "bus-stop">("bus-stop");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -240,12 +241,22 @@ export default function Page() {
     setError("");
   };
 
+  const changeExperience = (next: "poster" | "bus-stop") => {
+    clearAllTimers();
+    triggerLockedRef.current = false;
+    previousFrameRef.current = null;
+    consecutiveRef.current = 0;
+    setSoundVisible(false);
+    setExperience(next);
+    setVisualState(streamRef.current ? "idle" : "setup");
+  };
+
   useEffect(() => () => stopCamera(), [stopCamera]);
 
   const dark = state === "setup" || state === "idle" || state === "cooldown";
   return (
     <main
-      className={`pulse-app state-${state} ${soundVisible ? "sound-visible" : "sound-hidden"}`}
+      className={`pulse-app experience-${experience} state-${state} ${soundVisible ? "sound-visible" : "sound-hidden"}`}
     >
       <div className="poster-frame">
         <div className="poster-noise" aria-hidden="true" />
@@ -316,7 +327,38 @@ export default function Page() {
           </div>
         </section>
 
-        {state === "setup" && (
+        {experience === "bus-stop" && (
+          <section className="bus-stop-shell" aria-label="PULSE bus stop digital poster">
+            <div className="bus-stop-frame-glow" aria-hidden="true" />
+            <div className="bus-stop-screen">
+              <div className="bus-stop-standby">
+                <span className="bus-stop-pulse">PULSE</span>
+                <span className="bus-stop-sensor">{state === "setup" ? "NIGHT MODE / SENSOR READY" : "MOVE THROUGH THE FRAME"}</span>
+              </div>
+              <div className="bus-stop-poster">
+                <span className="bus-stop-wordmark">Pulse</span>
+                <div className="bus-stop-copy">
+                  <small>HYDRATION / FOCUS / BALANCE</small>
+                  <strong>STILL<br /><em>AWAKE?</em></strong>
+                  <span>SO ARE WE.</span>
+                </div>
+                <div className="bus-stop-bottle">
+                  {!assetError ? <img src={BOTTLE_SRC} alt="PULSE lemon and ginger bottle" onError={() => setAssetError(true)} /> : <span>PULSE</span>}
+                </div>
+              </div>
+            </div>
+            {state === "setup" && (
+              <button className="bus-stop-activate" onClick={activate}>
+                <Camera />
+                ACTIVATE SENSOR
+                <span>↗</span>
+              </button>
+            )}
+            {state === "idle" && <div className="bus-stop-ready"><i /> WAITING FOR MOVEMENT</div>}
+          </section>
+        )}
+
+        {experience === "poster" && state === "setup" && (
           <section className="setup-panel" aria-labelledby="setup-title">
             <p className="setup-kicker">A WEBCAM-REACTIVE DIGITAL POSTER</p>
             <h1 id="setup-title">
@@ -367,7 +409,11 @@ export default function Page() {
           <aside className="dev-panel" aria-label="Developer controls">
             <div className="dev-heading">
               <span>DEV / NIGHT MODE</span>
-              <span className="dev-state">{state}</span>
+              <span className="dev-state">{experience} / {state}</span>
+            </div>
+            <div className="experience-switch" role="group" aria-label="Experience mode">
+              <button className={experience === "poster" ? "is-active" : ""} onClick={() => changeExperience("poster")}>POSTER</button>
+              <button className={experience === "bus-stop" ? "is-active" : ""} onClick={() => changeExperience("bus-stop")}>BUS STOP</button>
             </div>
             <label htmlFor="sensitivity">
               Motion sensitivity <output>{sensitivity}</output>
