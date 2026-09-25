@@ -258,6 +258,316 @@ button { cursor: pointer; }
 .qr-placeholder i:nth-child(7n) { opacity: .15; }
 
 
+/* Interactive bus stop / OOH experience */
+
+.experience-bus-stop .poster-frame {
+  background: #07111e;
+}
+
+.experience-bus-stop .poster-mark,
+.experience-bus-stop .status-line,
+.experience-bus-stop .poster-footer {
+  z-index: 30;
+}
+
+.experience-bus-stop .hero {
+  z-index: 4;
+}
+
+.bus-stop-shell {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(28,49,72,.34), transparent 48%),
+    #07111e;
+  overflow: hidden;
+}
+
+.bus-stop-screen {
+  position: relative;
+  width: min(38vw, 430px);
+  height: min(86vh, 820px);
+  min-width: 280px;
+  border: 2px solid rgba(180,207,226,.15);
+  background: #07111e;
+  box-shadow:
+    0 0 0 1px rgba(201,164,93,.05),
+    0 0 70px rgba(0,0,0,.75),
+    inset 0 0 50px rgba(0,0,0,.8);
+  overflow: hidden;
+  transition: border-color .8s ease, box-shadow .8s ease;
+}
+
+.bus-stop-screen::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(201,164,93,.11);
+  pointer-events: none;
+  transition: opacity .8s ease, border-color .8s ease;
+}
+
+.bus-stop-frame-glow {
+  position: absolute;
+  width: min(42vw, 480px);
+  height: min(90vh, 860px);
+  border: 1px solid rgba(201,164,93,.14);
+  box-shadow:
+    0 0 25px rgba(201,164,93,.035),
+    inset 0 0 25px rgba(201,164,93,.025);
+  pointer-events: none;
+  transition: border-color .8s ease, box-shadow .8s ease;
+}
+
+.state-idle .bus-stop-frame-glow,
+.state-detected .bus-stop-frame-glow,
+.state-sound .bus-stop-frame-glow,
+.state-reveal .bus-stop-frame-glow {
+  border-color: rgba(201,164,93,.35);
+  box-shadow:
+    0 0 32px rgba(201,164,93,.09),
+    inset 0 0 28px rgba(201,164,93,.035);
+}
+
+.state-detected .bus-stop-screen,
+.state-sound .bus-stop-screen {
+  border-color: rgba(201,164,93,.3);
+  box-shadow:
+    0 0 45px rgba(201,164,93,.11),
+    inset 0 0 50px rgba(0,0,0,.8);
+}
+
+.bus-stop-standby,
+.bus-stop-poster {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.bus-stop-standby {
+  opacity: 1;
+  transition: opacity 1.2s ease;
+}
+
+.state-detected .bus-stop-standby,
+.state-sound .bus-stop-standby,
+.state-reveal .bus-stop-standby,
+.state-fadeOut .bus-stop-standby,
+.state-cooldown .bus-stop-standby {
+  opacity: 0;
+}
+
+.bus-stop-pulse {
+  color: rgba(201,164,93,.72);
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 300;
+  letter-spacing: -.06em;
+  text-shadow: 0 0 20px rgba(201,164,93,.1);
+}
+
+.bus-stop-sensor {
+  position: absolute;
+  bottom: 8%;
+  color: rgba(238,231,216,.28);
+  font-size: 7px;
+  letter-spacing: .25em;
+}
+
+.state-idle .bus-stop-sensor {
+  color: rgba(201,164,93,.55);
+}
+
+.bus-stop-sensor::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 8px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.state-idle .bus-stop-sensor::before {
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(201,164,93,.7);
+  animation: bus-sensor-pulse 1.6s ease-in-out infinite;
+}
+
+.bus-stop-poster {
+  padding: 7% 8%;
+  display: block;
+  opacity: 0;
+  transform: scale(.985);
+  filter: blur(4px);
+  transition: opacity 2.2s ease, transform 2.2s ease, filter 2.2s ease;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(57,77,101,.28), transparent 36%),
+    #0b1727;
+}
+
+.state-reveal .bus-stop-poster {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.state-fadeOut .bus-stop-poster {
+  opacity: 0;
+  transform: scale(.995);
+  filter: blur(2px);
+  transition-duration: 2.4s;
+}
+
+.bus-stop-wordmark {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  color: var(--gold);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -.07em;
+}
+
+.bus-stop-copy {
+  position: absolute;
+  top: 29%;
+  left: 8%;
+  z-index: 2;
+  display: grid;
+  gap: 8px;
+}
+
+.bus-stop-copy small {
+  color: rgba(238,231,216,.48);
+  font-size: 6px;
+  letter-spacing: .2em;
+}
+
+.bus-stop-copy strong {
+  color: var(--cream);
+  font-size: clamp(30px, 4.8vw, 58px);
+  line-height: .82;
+  letter-spacing: -.07em;
+}
+
+.bus-stop-copy em {
+  color: var(--cream);
+  font-style: normal;
+  font-weight: 300;
+}
+
+.bus-stop-copy > span {
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: .18em;
+}
+
+.bus-stop-bottle {
+  position: absolute;
+  width: 70%;
+  height: 56%;
+  left: 15%;
+  bottom: 5%;
+  display: grid;
+  place-items: center;
+}
+
+.bus-stop-bottle img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(0,0,0,.8));
+}
+
+.bus-stop-bottle span {
+  color: var(--gold);
+  font-size: 30px;
+}
+
+.bus-stop-activate {
+  position: absolute;
+  z-index: 20;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(201,164,93,.6);
+  background: rgba(5,9,15,.9);
+  color: var(--cream);
+  padding: 11px 14px;
+  font-size: 8px;
+  letter-spacing: .17em;
+  white-space: nowrap;
+}
+
+.bus-stop-activate svg {
+  width: 13px;
+  height: 13px;
+  color: var(--gold);
+}
+
+.bus-stop-activate span {
+  color: var(--gold);
+  margin-left: 4px;
+}
+
+.bus-stop-ready {
+  position: absolute;
+  z-index: 20;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(201,164,93,.65);
+  font-size: 7px;
+  letter-spacing: .2em;
+  white-space: nowrap;
+}
+
+.bus-stop-ready i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 7px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 9px rgba(201,164,93,.65);
+}
+
+.experience-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin-bottom: 13px;
+}
+
+.experience-switch button {
+  border: 1px solid rgba(238,231,216,.1);
+  background: rgba(238,231,216,.025);
+  color: rgba(238,231,216,.35);
+  padding: 7px 4px;
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+
+.experience-switch button.is-active {
+  border-color: rgba(201,164,93,.6);
+  color: var(--gold);
+  background: rgba(201,164,93,.08);
+}
+
+@keyframes bus-sensor-pulse {
+  0%, 100% { opacity: .5; box-shadow: 0 0 0 rgba(201,164,93,0); }
+  50% { opacity: 1; box-shadow: 0 0 10px rgba(201,164,93,.75); }
+}
+
 /* PULSE home / choice screen */
 
 .home-wait {
@@ -787,6 +1097,48 @@ button { cursor: pointer; }
   0% { opacity: 0; transform: scale(.7); letter-spacing: .25em; }
   35% { opacity: 1; }
   100% { opacity: 0; transform: scale(1.15); letter-spacing: .55em; }
+}
+
+@media (max-width: 900px) {
+  .bus-stop-screen {
+    width: min(48vw, 380px);
+    height: min(84vh, 760px);
+  }
+
+  .bus-stop-frame-glow {
+    width: min(52vw, 420px);
+    height: min(88vh, 800px);
+  }
+}
+
+@media (orientation: portrait), (max-width: 700px) {
+  .experience-bus-stop .poster-mark,
+  .experience-bus-stop .status-line {
+    z-index: 40;
+  }
+
+  .bus-stop-screen {
+    width: min(72vw, 390px);
+    height: min(78vh, 720px);
+  }
+
+  .bus-stop-frame-glow {
+    width: min(78vw, 420px);
+    height: min(82vh, 750px);
+  }
+
+  .bus-stop-copy strong {
+    font-size: clamp(34px, 10vw, 52px);
+  }
+
+  .bus-stop-bottle {
+    height: 52%;
+  }
+
+  .bus-stop-activate,
+  .bus-stop-ready {
+    bottom: 6%;
+  }
 }
 
 /* Tablet / medium screens */
