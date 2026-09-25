@@ -563,7 +563,41 @@ button { cursor: pointer; }
   background: rgba(201,164,93,.08);
 }
 
+.heartbeat-active .bus-stop-poster {
+  animation: bus-heartbeat 1.15s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.heartbeat-active .bus-stop-screen {
+  box-shadow:
+    0 0 52px rgba(201,164,93,.15),
+    inset 0 0 50px rgba(0,0,0,.8);
+}
+
+@keyframes bus-heartbeat {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  12% {
+    transform: scale(1.006);
+    filter: brightness(1.035);
+  }
+  24% {
+    transform: scale(1.002);
+    filter: brightness(1.012);
+  }
+  42% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
 @keyframes bus-sensor-pulse {
+  0%, 100% { opacity: .5; box-shadow: 0 0 0 rgba(201,164,93,0); }
+  50% { opacity: 1; box-shadow: 0 0 10px rgba(201,164,93,.75); }
+}
+ {
   0%, 100% { opacity: .5; box-shadow: 0 0 0 rgba(201,164,93,0); }
   50% { opacity: 1; box-shadow: 0 0 10px rgba(201,164,93,.75); }
 }
