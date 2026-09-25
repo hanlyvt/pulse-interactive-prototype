@@ -154,6 +154,7 @@ export default function Page() {
     });
     schedule(950, () => {
       setVisualState("reveal");
+      if (experience !== "bus-stop") return;
       setHeartbeatActive(true);
       const heartbeat = heartbeatRef.current;
       if (heartbeat) {
@@ -185,7 +186,7 @@ export default function Page() {
       if (process.env.NODE_ENV !== "production")
         console.log("[PULSE] detector re-armed");
     });
-  }, [clearAllTimers, resetExperience, setVisualState]);
+  }, [clearAllTimers, experience, resetExperience, setVisualState]);
 
   const sampleMotion = useCallback(() => {
     const video = videoRef.current;
