@@ -13,6 +13,7 @@ const BOTTLE_SRC =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/fles-xdbOvpaEPnIiFKGKxH6F0KuOwNwYMh.png";
 const SOUND_SRC =
   "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pulse-open-8x4s9HQHS6HuYzgzT8RvFG7aODKVpl.mp3";
+const HEARTBEAT_SRC = "/audio/heartbeat.mp3";
 
 type State =
   | "setup"
@@ -40,12 +41,14 @@ export default function Page() {
   const [error, setError] = useState("");
   const [assetError, setAssetError] = useState(false);
   const [soundVisible, setSoundVisible] = useState(false);
+  const [heartbeatActive, setHeartbeatActive] = useState(false);
   const [devOpen, setDevOpen] = useState(true);
   const [experience, setExperience] = useState<"poster" | "bus-stop">("bus-stop");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const heartbeatRef = useRef<HTMLAudioElement>(null);
   const timerRef = useRef<number[]>([]);
   const sequenceIdRef = useRef(0);
   const animationFrameRef = useRef<number | null>(null);
@@ -80,6 +83,7 @@ export default function Page() {
     (nextState: State = streamRef.current ? "idle" : "setup") => {
       clearAllTimers();
       setSoundVisible(false);
+      setHeartbeatActive(false);
       triggerLockedRef.current = false;
       previousFrameRef.current = null;
       consecutiveRef.current = 0;
@@ -88,6 +92,11 @@ export default function Page() {
       if (audio) {
         audio.pause();
         audio.currentTime = 0;
+      }
+      const heartbeat = heartbeatRef.current;
+      if (heartbeat) {
+        heartbeat.pause();
+        heartbeat.currentTime = 0;
       }
       setVisualState(nextState);
     },
@@ -143,7 +152,32 @@ export default function Page() {
       setSoundVisible(false);
       if (process.env.NODE_ENV !== "production") console.log("[PULSE] silence");
     });
-    schedule(950, () => setVisualState("reveal"));
+    schedule(950, () => {
+      setVisualState("reveal");
+      setHeartbeatActive(true);
+      const heartbeat = heartbeatRef.current;
+      if (heartbeat) {
+        heartbeat.currentTime = 0;
+        heartbeat.volume = 0.55;
+        heartbeat
+          .play()
+          .then(() => {
+            if (process.env.NODE_ENV !== "production")
+              console.log("[PULSE] heartbeat started");
+          })
+          .catch(() => undefined);
+      }
+    });
+    schedule(8500, () => {
+      setHeartbeatActive(false);
+      const heartbeat = heartbeatRef.current;
+      if (heartbeat) {
+        heartbeat.pause();
+        heartbeat.currentTime = 0;
+      }
+      if (process.env.NODE_ENV !== "production")
+        console.log("[PULSE] heartbeat ended");
+    });
     schedule(11150, () => setVisualState("fadeOut"));
     schedule(13150, () => setVisualState("cooldown"));
     schedule(33150, () => {
@@ -256,7 +290,7 @@ export default function Page() {
   const dark = state === "setup" || state === "idle" || state === "cooldown";
   return (
     <main
-      className={`pulse-app experience-${experience} state-${state} ${soundVisible ? "sound-visible" : "sound-hidden"}`}
+      className={`pulse-app experience-${experience} state-${state} ${soundVisible ? "sound-visible" : "sound-hidden"} ${heartbeatActive ? "heartbeat-active" : ""}`}
     >
       <div className="poster-frame">
         <div className="poster-noise" aria-hidden="true" />
@@ -460,6 +494,7 @@ export default function Page() {
           </aside>
         )}
         <audio ref={audioRef} src={SOUND_SRC} preload="auto" />
+        <audio ref={heartbeatRef} src={HEARTBEAT_SRC} preload="auto" loop />
         <footer className="poster-footer">
           <span>© 2026 PULSE</span>
           <span>LEMON &amp; GINGER / 500 ML</span>
