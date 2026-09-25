@@ -3,12 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AudioLines,
-  BriefcaseBusiness,
   Camera,
   CameraOff,
-  House,
-  Martini,
-  Moon,
   RotateCcw,
   X,
 } from "lucide-react";
@@ -320,87 +316,35 @@ export default function Page() {
           </div>
         </section>
 
-        {(state === "setup" || state === "idle" || state === "choose") && (
-          <section
-            className={`home-screen ${state === "choose" ? "is-choice" : ""}`}
-            aria-labelledby="home-title"
-          >
-            <div className="home-brand" aria-hidden="true">
-              <span className="home-pulse-line" />
-              <span className="pulse-word">Pulse</span>
-            </div>
-            <div className="home-moon" aria-hidden="true" />
-            <div className="home-content">
-              <h1 id="home-title">
-                What are you
-                <br />
-                doing up?
-              </h1>
-              <div className="home-rule" />
-              <div className="choice-grid">
-                <button
-                  className="choice-button"
-                  disabled={state !== "choose"}
-                  onClick={() => setVisualState("reveal")}
-                >
-                  <BriefcaseBusiness />
-                  <span>Going to work</span>
-                  <b>›</b>
-                </button>
-                <button
-                  className="choice-button"
-                  disabled={state !== "choose"}
-                  onClick={() => setVisualState("reveal")}
-                >
-                  <Moon />
-                  <span>Can&apos;t sleep</span>
-                  <b>›</b>
-                </button>
-                <button
-                  className="choice-button"
-                  disabled={state !== "choose"}
-                  onClick={() => setVisualState("reveal")}
-                >
-                  <Martini />
-                  <span>Going out</span>
-                  <b>›</b>
-                </button>
-                <button
-                  className="choice-button"
-                  disabled={state !== "choose"}
-                  onClick={() => setVisualState("reveal")}
-                >
-                  <House />
-                  <span>Going home</span>
-                  <b>›</b>
-                </button>
-              </div>
-            </div>
-            <div className="choose-hint" aria-hidden="true">
-              <svg
-                className="finger-icon"
-                viewBox="0 0 64 76"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M30 71C24 71 18 68 14 63L6 53C4 50 4.5 46.5 7.5 44.5C10 42.5 13.5 43 16 45.5L23 52V16C23 12.5 25.5 10 29 10C32.5 10 35 12.5 35 16V39" />
-                <path d="M35 39V7C35 3.5 37.5 1 41 1C44.5 1 47 3.5 47 7V40" />
-                <path d="M47 40V16C47 12.5 49.5 10 53 10C56.5 10 59 12.5 59 16V45C59 59 50 69 37 72L30 71Z" />
-                <path d="M35 40V25C35 21.5 37.5 19 41 19" />
-                <path d="M47 40V29C47 25.5 49.5 23 53 23" />
-                <path className="finger-spark" d="M18 12L14 6M8 24L2 22" />
-              </svg>
-              <strong>
-                {state === "choose" ? "CHOOSE ONE" : "MOVE TO WAKE PULSE"}
-              </strong>
-            </div>
+        {state === "setup" && (
+          <section className="setup-panel" aria-labelledby="setup-title">
+            <p className="setup-kicker">A WEBCAM-REACTIVE DIGITAL POSTER</p>
+            <h1 id="setup-title">
+              THE NIGHT
+              <br />
+              <span>NOTICES YOU.</span>
+            </h1>
+            <p className="setup-copy">
+              Activate your camera to experience the poster. Camera input is
+              used locally for movement detection only. Nothing is recorded or
+              stored.
+            </p>
             {error && (
-              <div className="error-panel home-error" role="alert">
+              <div className="error-panel" role="alert">
                 <strong>CAMERA UNAVAILABLE</strong>
                 <span>{error}</span>
-                <button onClick={activate}>TRY AGAIN</button>
               </div>
             )}
+            <button className="primary-cta" onClick={activate}>
+              <Camera data-icon="inline-start" />
+              {error ? "TRY AGAIN" : "ACTIVATE NIGHT MODE"}
+              <span>↗</span>
+            </button>
+            <p className="privacy">
+              Camera input is processed locally for movement detection.
+              <br />
+              No video, image or personal data is recorded, stored or sent.
+            </p>
           </section>
         )}
 
